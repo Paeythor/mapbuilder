@@ -10,8 +10,7 @@ import {
   DefaultStylePanel,
   DefaultContextMenu,
   DefaultPageMenu,
-  DefaultMainMenu,
-  DefaultSidebar
+  DefaultMainMenu
 } from 'tldraw'
 
 const STORAGE_KEY = 'mapbuilder-local-snapshot'
@@ -26,6 +25,382 @@ const terrainBrushes = [
   { id: 'river', label: 'River', color: '#2b6cb0', geo: 'rectangle' },
   { id: 'label', label: 'Label', color: '#111827', geo: 'text' }
 ]
+
+function createMountainShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y + 16,
+      props: {
+        geo: 'ellipse',
+        w: 190,
+        h: 90,
+        fill: 'solid',
+        color: '#4f4f4f',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 8,
+      y: point.y - 18,
+      props: {
+        geo: 'ellipse',
+        w: 140,
+        h: 80,
+        fill: 'solid',
+        color: '#7d7d7d',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 24,
+      y: point.y - 28,
+      props: {
+        geo: 'ellipse',
+        w: 96,
+        h: 70,
+        fill: 'solid',
+        color: '#9d9d9d',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 2,
+      y: point.y - 48,
+      props: {
+        geo: 'ellipse',
+        w: 58,
+        h: 32,
+        fill: 'solid',
+        color: '#e6e6e6',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 24,
+      y: point.y - 4,
+      rotation: -16,
+      props: {
+        geo: 'rectangle',
+        w: 14,
+        h: 80,
+        fill: 'solid',
+        color: '#666666',
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createForestShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      props: {
+        geo: 'ellipse',
+        w: 180,
+        h: 90,
+        fill: 'solid',
+        color: '#2d6f36',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 22,
+      y: point.y - 10,
+      props: {
+        geo: 'ellipse',
+        w: 76,
+        h: 56,
+        fill: 'solid',
+        color: '#1e4f24',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 24,
+      y: point.y - 12,
+      props: {
+        geo: 'ellipse',
+        w: 70,
+        h: 52,
+        fill: 'solid',
+        color: '#3b8d43',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y + 22,
+      props: {
+        geo: 'ellipse',
+        w: 56,
+        h: 34,
+        fill: 'solid',
+        color: '#265f28',
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createWaterShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      props: {
+        geo: 'ellipse',
+        w: 190,
+        h: 100,
+        fill: 'solid',
+        color: '#1e5294',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 8,
+      y: point.y - 10,
+      props: {
+        geo: 'ellipse',
+        w: 156,
+        h: 76,
+        fill: 'solid',
+        color: '#3190df',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 32,
+      y: point.y + 16,
+      props: {
+        geo: 'ellipse',
+        w: 28,
+        h: 18,
+        fill: 'solid',
+        color: '#9ec9f5',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 34,
+      y: point.y + 24,
+      props: {
+        geo: 'ellipse',
+        w: 20,
+        h: 14,
+        fill: 'solid',
+        color: '#a8d9ff',
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createDesertShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      props: {
+        geo: 'ellipse',
+        w: 210,
+        h: 110,
+        fill: 'solid',
+        color: '#d9b46f',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 4,
+      y: point.y - 12,
+      props: {
+        geo: 'ellipse',
+        w: 156,
+        h: 70,
+        fill: 'solid',
+        color: '#c79b51',
+        dash: 'draw'
+      }
+    },
+    ...[[-48, 12], [-18, 22], [24, 30], [48, -8], [12, -18]].map(([dx, dy]) => ({
+      type: 'geo',
+      x: point.x + dx,
+      y: point.y + dy,
+      props: {
+        geo: 'ellipse',
+        w: 14,
+        h: 14,
+        fill: 'solid',
+        color: '#b98a47',
+        dash: 'draw'
+      }
+    }))
+  ]
+}
+
+function createHillShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y + 10,
+      props: {
+        geo: 'ellipse',
+        w: 170,
+        h: 84,
+        fill: 'solid',
+        color: '#987444',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 8,
+      y: point.y - 8,
+      props: {
+        geo: 'ellipse',
+        w: 120,
+        h: 54,
+        fill: 'solid',
+        color: '#b89863',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 42,
+      y: point.y + 30,
+      props: {
+        geo: 'ellipse',
+        w: 20,
+        h: 20,
+        fill: 'solid',
+        color: '#7d6037',
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createCityShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      props: {
+        geo: 'rectangle',
+        w: 140,
+        h: 90,
+        fill: 'solid',
+        color: '#4b4b4b',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 40,
+      y: point.y - 30,
+      props: {
+        geo: 'rectangle',
+        w: 28,
+        h: 36,
+        fill: 'solid',
+        color: '#6d6d6d',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 10,
+      y: point.y - 38,
+      props: {
+        geo: 'rectangle',
+        w: 30,
+        h: 42,
+        fill: 'solid',
+        color: '#575757',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 42,
+      y: point.y - 18,
+      props: {
+        geo: 'rectangle',
+        w: 28,
+        h: 32,
+        fill: 'solid',
+        color: '#4a4a4a',
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createRiverShapes(point) {
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      rotation: -12,
+      props: {
+        geo: 'rectangle',
+        w: 240,
+        h: 50,
+        fill: 'solid',
+        color: '#1f5b9f',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 8,
+      y: point.y - 4,
+      rotation: -10,
+      props: {
+        geo: 'rectangle',
+        w: 190,
+        h: 24,
+        fill: 'solid',
+        color: '#3a80cc',
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 40,
+      y: point.y + 12,
+      props: {
+        geo: 'ellipse',
+        w: 28,
+        h: 20,
+        fill: 'solid',
+        color: '#8bbbed',
+        dash: 'draw'
+      }
+    }
+  ]
+}
 
 function getSavedSnapshot() {
   try {
@@ -51,36 +426,65 @@ function downloadFile(content, name, type = 'application/json') {
 function TerrainToolbar({ editor }) {
   const addShape = (brush) => {
     const point = editor.getViewportPageBounds().center
-    let shape = {
-      type: 'geo',
-      x: point.x,
-      y: point.y,
-      props: {
-        geo: brush.geo === 'text' ? 'rectangle' : brush.geo,
-        w: brush.geo === 'text' ? 260 : 140,
-        h: brush.geo === 'text' ? 60 : 100,
-        fill: 'solid',
-        color: brush.color,
-        dash: 'draw'
-      }
+    let shapes = []
+
+    switch (brush.id) {
+      case 'mountain':
+        shapes = createMountainShapes(point)
+        break
+      case 'forest':
+        shapes = createForestShapes(point)
+        break
+      case 'water':
+        shapes = createWaterShapes(point)
+        break
+      case 'desert':
+        shapes = createDesertShapes(point)
+        break
+      case 'hill':
+        shapes = createHillShapes(point)
+        break
+      case 'city':
+        shapes = createCityShapes(point)
+        break
+      case 'river':
+        shapes = createRiverShapes(point)
+        break
+      case 'label':
+        shapes = [
+          {
+            type: 'text',
+            x: point.x,
+            y: point.y,
+            props: {
+              text: 'New label',
+              size: 28,
+              align: 'middle',
+              color: brush.color,
+              font: 'inter'
+            }
+          }
+        ]
+        break
+      default:
+        shapes = [
+          {
+            type: 'geo',
+            x: point.x,
+            y: point.y,
+            props: {
+              geo: brush.geo === 'text' ? 'rectangle' : brush.geo,
+              w: brush.geo === 'text' ? 260 : 140,
+              h: brush.geo === 'text' ? 60 : 100,
+              fill: 'solid',
+              color: brush.color,
+              dash: 'draw'
+            }
+          }
+        ]
     }
 
-    if (brush.id === 'label') {
-      shape = {
-        type: 'text',
-        x: point.x,
-        y: point.y,
-        props: {
-          text: 'New label',
-          size: 28,
-          align: 'middle',
-          color: brush.color,
-          font: 'inter'
-        }
-      }
-    }
-
-    editor.createShapes([shape])
+    editor.createShapes(shapes)
   }
 
   return (
@@ -107,8 +511,7 @@ export default function App() {
       StylePanel: () => <DefaultStylePanel />,
       ContextMenu: () => <DefaultContextMenu />,
       PageMenu: () => <DefaultPageMenu />,
-      MainMenu: () => <DefaultMainMenu />,
-      Sidebar: () => <DefaultSidebar />
+      MainMenu: () => <DefaultMainMenu />
     }),
     []
   )
@@ -209,10 +612,10 @@ export default function App() {
           <section className="panel">
             <h2>Design notes</h2>
             <ul>
-              <li>Use the built-in toolbar to draw rivers, roads, and freehand details.</li>
+              <li>Use the terrain stamps to place layered mountains, dunes, forests, lakes, and cities.</li>
+              <li>Draw rivers and roads with the built-in freehand tools for natural curves.</li>
               <li>Zoom with wheel gestures and pan anywhere on the infinite canvas.</li>
               <li>Save locally and export JSON to preserve your work.</li>
-              <li>Drop labels, terrain regions, and landmarks with a single click.</li>
             </ul>
           </section>
         </aside>
