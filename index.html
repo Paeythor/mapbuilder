@@ -4,11 +4,233 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MapBuilder</title>
-    <meta name="description" content="Fantasy map builder with infinite scale, terrain stamps, and export tools." />
-    <link rel="icon" href="data:," />
+    <style>
+      :root { color-scheme: dark; }
+      html, body { margin: 0; height: 100%; overflow: hidden; font-family: Inter, system-ui, sans-serif; background: #050816; color: #e2e8f0; }
+      body { display: grid; grid-template-rows: auto 1fr; }
+      header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 14px 16px; background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,0.85)); border-bottom: 1px solid rgba(148,163,184,.12); }
+      header h1 { margin: 0; font-size: 20px; letter-spacing: -.03em; }
+      .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      button, label { border: none; border-radius: 12px; background: rgba(148,163,184,.12); color: #e2e8f0; padding: 10px 14px; cursor: pointer; font-size: 14px; transition: transform .15s ease, background .15s ease; }
+      button:hover, label:hover { background: rgba(148,163,184,.2); transform: translateY(-1px); }
+      label input { display: none; }
+      #status { margin-left: auto; opacity: .8; font-size: 14px; }
+      main { position: relative; overflow: hidden; }
+      canvas { width: 100%; height: 100%; display: block; background: #0f172a; cursor: crosshair; }
+      .panel { position: absolute; left: 16px; top: 16px; width: min(320px, calc(100vw - 32px)); padding: 16px; border-radius: 18px; background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,.12); backface-visibility: hidden; }
+      .panel h2 { margin: 0 0 10px; font-size: 16px; }
+      .panel p { margin: 0 0 10px; color: #cbd5e1; font-size: 13px; line-height: 1.6; }
+      .panel ul { margin: 0; padding-left: 18px; color: #cbd5e1; }
+      .panel ul li { margin-bottom: 6px; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="%BASE_URL%src/main.jsx"></script>
+    <header>
+      <h1>MapBuilder</h1>
+      <div class="toolbar">
+        <button type="button" data-tool="mountain">Mountain</button>
+        <button type="button" data-tool="forest">Forest</button>
+        <button type="button" data-tool="water">Water</button>
+        <button type="button" data-tool="desert">Desert</button>
+        <button type="button" data-tool="hill">Hill</button>
+        <button type="button" data-tool="city">City</button>
+        <button type="button" data-tool="river">River</button>
+        <button type="button" data-tool="label">Label</button>
+        <button type="button" id="clear">Clear</button>
+        <button type="button" id="download">Export JSON</button>
+        <label>Import JSON<input type="file" id="importFile" accept="application/json" /></label>
+      </div>
+      <div id="status">Click canvas to place terrain. Drag to pan. Scroll to zoom.</div>
+    </header>
+    <main>
+      <canvas id="map"></canvas>
+      <div class="panel">
+        <h2>Instructions</h2>
+        <p>Choose a terrain tool, then click on the canvas to stamp it. Use drag to pan and wheel to zoom. Import/export allows sharing your map.</p>
+        <ul>
+          <li>Click a tool button, then click the map</li>
+          <li>Shift+click labels to enter text</li>
+          <li>Use the export button to download your map JSON</li>
+        </ul>
+      </div>
+    </main>
+    <script>
+      const canvas = document.getElementById('map');
+      const ctx = canvas.getContext('2d');
+      const tools = { mountain: { color: '#8b8b8b', shape: 'circle', size: 90 }, forest: { color: '#2f7d32', shape: 'circle', size: 110 }, water: { color: '#2b6cb0', shape: 'circle', size: 140 }, desert: { color: '#d9b46f', shape: 'rect', size: 140 }, hill: { color: '#a67c52', shape: 'ellipse', size: 120 }, city: { color: '#444444', shape: 'rect', size: 90 }, river: { color: '#2b6cb0', shape: 'line', size: 180 }, label: { color: '#e2e8f0', shape: 'text', size: 0 } };
+      let selectedTool = 'mountain';
+      const mapObjects = [];
+      let scale = 1, offsetX = 0, offsetY = 0, isDragging = false, dragStart = null;
+      const status = document.getElementById('status');
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * devicePixelRatio;
+        canvas.height = rect.height * devicePixelRatio;
+        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        draw();
+      }
+
+      function drawGrid() {
+        const step = 50 * scale;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(148,163,184,0.12)';
+        ctx.lineWidth = 1;
+        const w = canvas.width / devicePixelRatio;
+        const h = canvas.height / devicePixelRatio;
+        const startX = -offsetX % step;
+        const startY = -offsetY % step;
+        for (let x = startX; x < w; x += step) ctx.beginPath(), ctx.moveTo(x, 0), ctx.lineTo(x, h), ctx.stroke();
+        for (let y = startY; y < h; y += step) ctx.beginPath(), ctx.moveTo(0, y), ctx.lineTo(w, y), ctx.stroke();
+        ctx.restore();
+      }
+
+      function draw() {
+        const w = canvas.width / devicePixelRatio;
+        const h = canvas.height / devicePixelRatio;
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#07111f';
+        ctx.fillRect(0, 0, w, h);
+        ctx.save();
+        ctx.translate(offsetX, offsetY);
+        ctx.scale(scale, scale);
+        drawGrid();
+        for (const item of mapObjects) {
+          ctx.save();
+          ctx.translate(item.x, item.y);
+          if (item.shape === 'circle') {
+            ctx.fillStyle = item.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, item.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          } else if (item.shape === 'rect') {
+            ctx.fillStyle = item.color;
+            ctx.fillRect(-item.size/2, -item.size/3, item.size, item.size/1.8);
+          } else if (item.shape === 'ellipse') {
+            ctx.fillStyle = item.color;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, item.size/2, item.size/3, 0, 0, Math.PI*2);
+            ctx.fill();
+          } else if (item.shape === 'line') {
+            ctx.strokeStyle = item.color;
+            ctx.lineWidth = 16;
+            ctx.beginPath();
+            ctx.moveTo(-item.size/2, 0);
+            ctx.quadraticCurveTo(0, item.size/4, item.size/2, 0);
+            ctx.stroke();
+          } else if (item.shape === 'text') {
+            ctx.fillStyle = item.color;
+            ctx.font = 'bold 24px Inter, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(item.text, 0, 0);
+          }
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      function toMapCoords(x, y) {
+        const rect = canvas.getBoundingClientRect();
+        const px = (x - rect.left - offsetX) / scale;
+        const py = (y - rect.top - offsetY) / scale;
+        return { x: px, y: py };
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      document.querySelectorAll('button[data-tool]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedTool = btn.dataset.tool;
+          status.textContent = `Selected: ${selectedTool}`;
+        });
+      });
+
+      canvas.addEventListener('mousedown', (event) => {
+        if (event.button !== 0) return;
+        if (event.shiftKey && selectedTool === 'label') {
+          const text = prompt('Label text', 'New label');
+          if (!text) return;
+          const pos = toMapCoords(event.clientX, event.clientY);
+          mapObjects.push({ shape: 'text', x: pos.x, y: pos.y, text, color: '#e2e8f0' });
+          draw();
+          return;
+        }
+        const pos = toMapCoords(event.clientX, event.clientY);
+        const tool = tools[selectedTool];
+        if (!tool) return;
+        const item = { shape: tool.shape, x: pos.x, y: pos.y, color: tool.color, size: tool.size };
+        mapObjects.push(item);
+        draw();
+      });
+
+      canvas.addEventListener('wheel', (event) => {
+        event.preventDefault();
+        const delta = event.deltaY > 0 ? 0.9 : 1.1;
+        const rect = canvas.getBoundingClientRect();
+        const mx = event.clientX - rect.left;
+        const my = event.clientY - rect.top;
+        offsetX = mx - (mx - offsetX) * delta;
+        offsetY = my - (my - offsetY) * delta;
+        scale = Math.max(0.3, Math.min(3, scale * delta));
+        draw();
+      }, { passive: false });
+
+      let isPanning = false;
+      canvas.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        if (event.shiftKey) return;
+        isPanning = true;
+        dragStart = { x: event.clientX - offsetX, y: event.clientY - offsetY };
+        canvas.setPointerCapture(event.pointerId);
+      });
+      canvas.addEventListener('pointermove', (event) => {
+        if (!isPanning) return;
+        offsetX = event.clientX - dragStart.x;
+        offsetY = event.clientY - dragStart.y;
+        draw();
+      });
+      canvas.addEventListener('pointerup', () => { isPanning = false; });
+      canvas.addEventListener('pointerleave', () => { isPanning = false; });
+
+      document.getElementById('clear').addEventListener('click', () => {
+        if (confirm('Clear all map objects?')) { mapObjects.length = 0; draw(); }
+      });
+
+      document.getElementById('download').addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify({ objects: mapObjects }, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'mapbuilder-map.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      document.getElementById('importFile').addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const text = await file.text();
+        try {
+          const data = JSON.parse(text);
+          if (Array.isArray(data.objects)) {
+            mapObjects.length = 0;
+            data.objects.forEach(obj => mapObjects.push(obj));
+            draw();
+          } else {
+            alert('Invalid map file');
+          }
+        } catch (err) {
+          alert('Invalid JSON file.');
+        }
+        event.target.value = '';
+      });
+    </script>
   </body>
 </html>
