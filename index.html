@@ -4,8 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MapBuilder</title>
-    <meta name="description" content="Fantasy map builder with infinite scale, terrain stamps, and export tools." />
-    <link rel="icon" href="data:," />
+    <style>
+      :root { color-scheme: dark; }
+      html, body { margin: 0; height: 100%; overflow: hidden; font-family: Inter, system-ui, sans-serif; background: #050816; color: #e2e8f0; }
+      body { display: grid; grid-template-rows: auto 1fr; }
+      header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 14px 16px; background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(15,23,42,0.85)); border-bottom: 1px solid rgba(148,163,184,.12); }
+      header h1 { margin: 0; font-size: 20px; letter-spacing: -.03em; }
+      .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      button, label { border: none; border-radius: 12px; background: rgba(148,163,184,.12); color: #e2e8f0; padding: 10px 14px; cursor: pointer; font-size: 14px; transition: transform .15s ease, background .15s ease; }
+      button:hover, label:hover { background: rgba(148,163,184,.2); transform: translateY(-1px); }
+      label input { display: none; }
+      #status { margin-left: auto; opacity: .8; font-size: 14px; }
+      main { position: relative; overflow: hidden; }
+      canvas { width: 100%; height: 100%; display: block; background: #0f172a; cursor: crosshair; }
+      .panel { position: absolute; left: 16px; top: 16px; width: min(320px, calc(100vw - 32px)); padding: 16px; border-radius: 18px; background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,.12); backface-visibility: hidden; }
+      .panel h2 { margin: 0 0 10px; font-size: 16px; }
+      .panel p { margin: 0 0 10px; color: #cbd5e1; font-size: 13px; line-height: 1.6; }
+      .panel ul { margin: 0; padding-left: 18px; color: #cbd5e1; }
+      .panel ul li { margin-bottom: 6px; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
