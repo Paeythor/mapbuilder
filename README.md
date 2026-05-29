@@ -39,6 +39,8 @@ git remote set-url origin https://github.com/Paeythor/mapbuilder.git
 
 ## GitHub Pages deployment
 
+This project now includes a GitHub Actions workflow to build and deploy the app automatically on every push to `main`.
+
 If you want to host the app using GitHub Pages:
 
 1. Set `base` in `vite.config.js` to `/mapbuilder/`.
@@ -48,12 +50,13 @@ If you want to host the app using GitHub Pages:
 npm install
 ```
 
-3. Build and deploy:
+3. Build locally if needed:
 
 ```bash
 npm run build
-npm run deploy
 ```
+
+The workflow will automatically deploy the `dist` output after pushing to `main`.
 
 Your site should then be available at `https://Paeythor.github.io/mapbuilder/`.
 
