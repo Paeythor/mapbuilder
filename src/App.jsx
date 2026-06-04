@@ -26,7 +26,63 @@ const terrainBrushes = [
   { id: 'label', label: 'Label', color: '#111827', geo: 'text' }
 ]
 
-function createMountainShapes(point) {
+const palettes = {
+  old: {
+    mountain: '#6f6a53',
+    forest: '#2f6a3d',
+    water: '#2b6cb0',
+    desert: '#d9b46f',
+    hill: '#a67c52',
+    city: '#49433f',
+    river: '#2b6cb0',
+    label: '#111827'
+  },
+  vibrant: {
+    mountain: '#7d7d7d',
+    forest: '#2fa84a',
+    water: '#1e90ff',
+    desert: '#f0c27b',
+    hill: '#c38a49',
+    city: '#333333',
+    river: '#1e90ff',
+    label: '#071529'
+  },
+  modern: {
+    mountain: '#5a5a5a',
+    forest: '#3b6f4b',
+    water: '#2b87c9',
+    desert: '#d1a66a',
+    hill: '#9b7a50',
+    city: '#2b2b2b',
+    river: '#2b87c9',
+    label: '#0f172a'
+  },
+  futuristic: {
+    mountain: '#9a6cff',
+    forest: '#29e0a1',
+    water: '#00e5ff',
+    desert: '#ffd166',
+    hill: '#ff7ab6',
+    city: '#bfc9ff',
+    river: '#00e5ff',
+    label: '#e6fff9'
+  }
+}
+
+function shadeColor(hex, percent) {
+  const h = (hex || '#000000').replace('#', '')
+  const num = parseInt(h, 16)
+  let r = (num >> 16) + Math.round(2.55 * percent)
+  let g = ((num >> 8) & 0x00ff) + Math.round(2.55 * percent)
+  let b = (num & 0x0000ff) + Math.round(2.55 * percent)
+  r = Math.max(0, Math.min(255, r))
+  g = Math.max(0, Math.min(255, g))
+  b = Math.max(0, Math.min(255, b))
+  return ('#' + (r << 16 | g << 8 | b).toString(16).padStart(6, '0'))
+}
+
+function createMountainShapes(point, palette) {
+  const base = (palette && palette.mountain) || '#4f4f4f'
   return [
     {
       type: 'geo',
@@ -37,7 +93,7 @@ function createMountainShapes(point) {
         w: 190,
         h: 90,
         fill: 'solid',
-        color: '#4f4f4f',
+        color: shadeColor(base, -18),
         dash: 'draw'
       }
     },
@@ -50,7 +106,7 @@ function createMountainShapes(point) {
         w: 140,
         h: 80,
         fill: 'solid',
-        color: '#7d7d7d',
+        color: shadeColor(base, -6),
         dash: 'draw'
       }
     },
@@ -63,7 +119,7 @@ function createMountainShapes(point) {
         w: 96,
         h: 70,
         fill: 'solid',
-        color: '#9d9d9d',
+        color: shadeColor(base, 6),
         dash: 'draw'
       }
     },
@@ -76,7 +132,7 @@ function createMountainShapes(point) {
         w: 58,
         h: 32,
         fill: 'solid',
-        color: '#e6e6e6',
+        color: shadeColor(base, 36),
         dash: 'draw'
       }
     },
@@ -90,14 +146,15 @@ function createMountainShapes(point) {
         w: 14,
         h: 80,
         fill: 'solid',
-        color: '#666666',
+        color: shadeColor(base, -34),
         dash: 'draw'
       }
     }
   ]
 }
 
-function createForestShapes(point) {
+function createForestShapes(point, palette) {
+  const base = (palette && palette.forest) || '#2d6f36'
   return [
     {
       type: 'geo',
@@ -108,7 +165,7 @@ function createForestShapes(point) {
         w: 180,
         h: 90,
         fill: 'solid',
-        color: '#2d6f36',
+        color: shadeColor(base, 0),
         dash: 'draw'
       }
     },
@@ -121,7 +178,7 @@ function createForestShapes(point) {
         w: 76,
         h: 56,
         fill: 'solid',
-        color: '#1e4f24',
+        color: shadeColor(base, -12),
         dash: 'draw'
       }
     },
@@ -134,7 +191,7 @@ function createForestShapes(point) {
         w: 70,
         h: 52,
         fill: 'solid',
-        color: '#3b8d43',
+        color: shadeColor(base, 10),
         dash: 'draw'
       }
     },
@@ -147,14 +204,15 @@ function createForestShapes(point) {
         w: 56,
         h: 34,
         fill: 'solid',
-        color: '#265f28',
+        color: shadeColor(base, -6),
         dash: 'draw'
       }
     }
   ]
 }
 
-function createWaterShapes(point) {
+function createWaterShapes(point, palette) {
+  const base = (palette && palette.water) || '#1e5294'
   return [
     {
       type: 'geo',
@@ -165,7 +223,7 @@ function createWaterShapes(point) {
         w: 190,
         h: 100,
         fill: 'solid',
-        color: '#1e5294',
+        color: shadeColor(base, -6),
         dash: 'draw'
       }
     },
@@ -178,7 +236,7 @@ function createWaterShapes(point) {
         w: 156,
         h: 76,
         fill: 'solid',
-        color: '#3190df',
+        color: shadeColor(base, 6),
         dash: 'draw'
       }
     },
@@ -191,7 +249,7 @@ function createWaterShapes(point) {
         w: 28,
         h: 18,
         fill: 'solid',
-        color: '#9ec9f5',
+        color: shadeColor(base, 30),
         dash: 'draw'
       }
     },
@@ -204,14 +262,15 @@ function createWaterShapes(point) {
         w: 20,
         h: 14,
         fill: 'solid',
-        color: '#a8d9ff',
+        color: shadeColor(base, 42),
         dash: 'draw'
       }
     }
   ]
 }
 
-function createDesertShapes(point) {
+function createDesertShapes(point, palette) {
+  const base = (palette && palette.desert) || '#d9b46f'
   return [
     {
       type: 'geo',
@@ -222,7 +281,7 @@ function createDesertShapes(point) {
         w: 210,
         h: 110,
         fill: 'solid',
-        color: '#d9b46f',
+        color: shadeColor(base, 0),
         dash: 'draw'
       }
     },
@@ -235,7 +294,7 @@ function createDesertShapes(point) {
         w: 156,
         h: 70,
         fill: 'solid',
-        color: '#c79b51',
+        color: shadeColor(base, -10),
         dash: 'draw'
       }
     },
@@ -248,14 +307,15 @@ function createDesertShapes(point) {
         w: 14,
         h: 14,
         fill: 'solid',
-        color: '#b98a47',
+        color: shadeColor(base, -22),
         dash: 'draw'
       }
     }))
   ]
 }
 
-function createHillShapes(point) {
+function createHillShapes(point, palette) {
+  const base = (palette && palette.hill) || '#987444'
   return [
     {
       type: 'geo',
@@ -266,7 +326,7 @@ function createHillShapes(point) {
         w: 170,
         h: 84,
         fill: 'solid',
-        color: '#987444',
+        color: shadeColor(base, 0),
         dash: 'draw'
       }
     },
@@ -279,7 +339,7 @@ function createHillShapes(point) {
         w: 120,
         h: 54,
         fill: 'solid',
-        color: '#b89863',
+        color: shadeColor(base, 12),
         dash: 'draw'
       }
     },
@@ -292,14 +352,15 @@ function createHillShapes(point) {
         w: 20,
         h: 20,
         fill: 'solid',
-        color: '#7d6037',
+        color: shadeColor(base, -18),
         dash: 'draw'
       }
     }
   ]
 }
 
-function createCityShapes(point) {
+function createCityShapes(point, palette) {
+  const base = (palette && palette.city) || '#4b4b4b'
   return [
     {
       type: 'geo',
@@ -310,7 +371,7 @@ function createCityShapes(point) {
         w: 140,
         h: 90,
         fill: 'solid',
-        color: '#4b4b4b',
+        color: shadeColor(base, 0),
         dash: 'draw'
       }
     },
@@ -323,7 +384,7 @@ function createCityShapes(point) {
         w: 28,
         h: 36,
         fill: 'solid',
-        color: '#6d6d6d',
+        color: shadeColor(base, 18),
         dash: 'draw'
       }
     },
@@ -336,7 +397,7 @@ function createCityShapes(point) {
         w: 30,
         h: 42,
         fill: 'solid',
-        color: '#575757',
+        color: shadeColor(base, -6),
         dash: 'draw'
       }
     },
@@ -349,14 +410,15 @@ function createCityShapes(point) {
         w: 28,
         h: 32,
         fill: 'solid',
-        color: '#4a4a4a',
+        color: shadeColor(base, -18),
         dash: 'draw'
       }
     }
   ]
 }
 
-function createRiverShapes(point) {
+function createRiverShapes(point, palette) {
+  const base = (palette && palette.river) || '#1f5b9f'
   return [
     {
       type: 'geo',
@@ -368,7 +430,7 @@ function createRiverShapes(point) {
         w: 240,
         h: 50,
         fill: 'solid',
-        color: '#1f5b9f',
+        color: shadeColor(base, -6),
         dash: 'draw'
       }
     },
@@ -382,7 +444,7 @@ function createRiverShapes(point) {
         w: 190,
         h: 24,
         fill: 'solid',
-        color: '#3a80cc',
+        color: shadeColor(base, 8),
         dash: 'draw'
       }
     },
@@ -395,7 +457,7 @@ function createRiverShapes(point) {
         w: 28,
         h: 20,
         fill: 'solid',
-        color: '#8bbbed',
+        color: shadeColor(base, 36),
         dash: 'draw'
       }
     }
@@ -423,32 +485,32 @@ function downloadFile(content, name, type = 'application/json') {
   URL.revokeObjectURL(url)
 }
 
-function TerrainToolbar({ editor }) {
+function TerrainToolbar({ editor, palette }) {
   const addShape = (brush) => {
     const point = editor.getViewportPageBounds().center
     let shapes = []
 
     switch (brush.id) {
       case 'mountain':
-        shapes = createMountainShapes(point)
+        shapes = createMountainShapes(point, palette)
         break
       case 'forest':
-        shapes = createForestShapes(point)
+        shapes = createForestShapes(point, palette)
         break
       case 'water':
-        shapes = createWaterShapes(point)
+        shapes = createWaterShapes(point, palette)
         break
       case 'desert':
-        shapes = createDesertShapes(point)
+        shapes = createDesertShapes(point, palette)
         break
       case 'hill':
-        shapes = createHillShapes(point)
+        shapes = createHillShapes(point, palette)
         break
       case 'city':
-        shapes = createCityShapes(point)
+        shapes = createCityShapes(point, palette)
         break
       case 'river':
-        shapes = createRiverShapes(point)
+        shapes = createRiverShapes(point, palette)
         break
       case 'label':
         shapes = [
@@ -456,13 +518,13 @@ function TerrainToolbar({ editor }) {
             type: 'text',
             x: point.x,
             y: point.y,
-            props: {
-              text: 'New label',
-              size: 28,
-              align: 'middle',
-              color: brush.color,
-              font: 'inter'
-            }
+              props: {
+                text: 'New label',
+                size: 28,
+                align: 'middle',
+                color: (palette && palette.label) || brush.color,
+                font: 'inter'
+              }
           }
         ]
         break
@@ -501,6 +563,7 @@ function TerrainToolbar({ editor }) {
 export default function App() {
   const [editor, setEditor] = useState(null)
   const [gridActive, setGridActive] = useState(true)
+  const [paletteName, setPaletteName] = useState('old')
   const store = useMemo(() => createTLStore({ shapeUtils: defaultShapeUtils }), [])
   const components = useMemo(
     () => ({
@@ -589,7 +652,15 @@ export default function App() {
           <section className="panel">
             <h2>Terrain stamps</h2>
             <p>Quickly drop mountains, forests, rivers, labels, and cities anywhere on the map.</p>
-            {editor && <TerrainToolbar editor={editor} />}
+            <label style={{ display: 'block', marginBottom: 8 }}>
+              Palette:
+              <select value={paletteName} onChange={(e) => setPaletteName(e.target.value)} style={{ marginLeft: 8 }}>
+                {Object.keys(palettes).map((k) => (
+                  <option key={k} value={k}>{k}</option>
+                ))}
+              </select>
+            </label>
+            {editor && <TerrainToolbar editor={editor} palette={palettes[paletteName]} />}
           </section>
 
           <section className="panel">
