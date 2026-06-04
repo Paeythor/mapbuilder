@@ -66,7 +66,7 @@ button.active {
 }
 
 .topbar {
-  padding: 22px 28px;
+  padding: 28px 28px 36px;
   background: linear-gradient(135deg, #fbf0d9 0%, #f1ddb6 100%);
   box-shadow: inset 0 -1px 0 rgba(93, 66, 37, 0.16), 0 14px 35px rgba(0, 0, 0, 0.15);
 }
@@ -79,15 +79,17 @@ button.active {
 }
 
 .subtitle {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   color: #5c452f;
   max-width: 44rem;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .layout {
   display: grid;
   grid-template-columns: 320px 1fr;
-  min-height: calc(100vh - 104px);
+  min-height: calc(100vh - 120px);
 }
 
 .sidebar {
