@@ -5,8 +5,21 @@ html, body, #root {
   width: 100%;
   height: 100%;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top left, #151b3a 0%, #070c18 55%, #05070d 100%);
-  color: #e2e8f0;
+  background: radial-gradient(circle at top left, #ede0be 0%, #e2cba4 35%, #c9ad7a 100%);
+  color: #2a1f14;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.08), transparent 18%),
+    radial-gradient(circle at 75% 35%, rgba(255, 255, 255, 0.05), transparent 20%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 3px 3px;
+  opacity: 0.35;
 }
 
 * {
@@ -53,8 +66,8 @@ button.active {
 
 .topbar {
   padding: 22px 28px;
-  background: linear-gradient(135deg, #10172c 0%, #111827 100%);
-  box-shadow: inset 0 -1px 0 rgba(148, 163, 184, 0.12), 0 12px 40px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(135deg, #fbf0d9 0%, #f1ddb6 100%);
+  box-shadow: inset 0 -1px 0 rgba(93, 66, 37, 0.16), 0 14px 35px rgba(0, 0, 0, 0.15);
 }
 
 .topbar h1 {
@@ -76,30 +89,31 @@ button.active {
 }
 
 .sidebar {
-  background: #111827;
-  border-right: 1px solid rgba(148, 163, 184, 0.12);
-  padding: 20px 18px;
+  background: rgba(255, 250, 238, 0.92);
+  border-right: 2px solid rgba(121, 81, 46, 0.16);
+  padding: 24px 22px;
   overflow-y: auto;
 }
 
 .panel {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 22px;
+  background: rgba(255, 251, 238, 0.95);
+  border-radius: 24px;
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(136, 98, 58, 0.18);
+  box-shadow: 0 14px 30px rgba(112, 72, 30, 0.08);
 }
 
 .panel h2 {
   margin: 0 0 12px;
   font-size: 18px;
-  color: #f8fafc;
+  color: #2f1f0f;
 }
 
 .panel p,
 .panel li {
-  color: #cbd5e1;
-  line-height: 1.7;
+  color: #4a3828;
+  line-height: 1.75;
 }
 
 .panel ul {
@@ -114,22 +128,45 @@ button.active {
 }
 
 .tool-button {
-  background: linear-gradient(180deg, #111827 0%, #161f33 100%);
-  color: #f8fafc;
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: linear-gradient(180deg, #f2e4c2 0%, #e5d0a1 100%);
+  color: #35250f;
+  border: 1px solid rgba(124, 85, 45, 0.24);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.tool-button:hover,
+.file-button:hover {
+  background: linear-gradient(180deg, #fdf4df 0%, #eed7ac 100%);
 }
 
 .canvas-panel {
   position: relative;
   min-height: 0;
-  background: radial-gradient(circle at top left, rgba(246, 235, 203, 0.08), transparent 40%),
-    linear-gradient(180deg, #121b2b 0%, #08101f 100%);
+  background: linear-gradient(180deg, #f5e6c4 0%, #e7d5b0 100%);
+  border: 6px solid #8e6a40;
+  border-radius: 28px;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.canvas-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.14), transparent 18%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08), transparent 20%),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 12px 12px;
 }
 
 .canvas-panel .tldraw-app {
   height: 100% !important;
-  background: radial-gradient(circle at 30% 15%, rgba(255, 255, 255, 0.08), transparent 30%),
-    linear-gradient(180deg, #9a7b4f 0%, #745c39 35%, #453519 100%);
+  background: linear-gradient(180deg, #f8ecd5 0%, #d8c59d 45%, #c2a776 100%);
+}
+
+.canvas-panel .tldraw-app .tl-page {
+  background: transparent;
 }
 
 @media (max-width: 1000px) {

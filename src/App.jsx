@@ -37,6 +37,16 @@ const palettes = {
     river: '#2b6cb0',
     label: '#111827'
   },
+  fantasy: {
+    mountain: '#7f6d54',
+    forest: '#4e6d43',
+    water: '#4b8fbf',
+    desert: '#d4a66f',
+    hill: '#9d7b52',
+    city: '#605043',
+    river: '#4b8fbf',
+    label: '#2f2319'
+  },
   vibrant: {
     mountain: '#7d7d7d',
     forest: '#2fa84a',
