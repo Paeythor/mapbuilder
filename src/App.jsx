@@ -573,7 +573,7 @@ function TerrainToolbar({ editor, palette }) {
 export default function App() {
   const [editor, setEditor] = useState(null)
   const [gridActive, setGridActive] = useState(true)
-  const [paletteName, setPaletteName] = useState('old')
+  const [paletteName, setPaletteName] = useState('fantasy')
   const store = useMemo(() => createTLStore({ shapeUtils: defaultShapeUtils }), [])
   const components = useMemo(
     () => ({
