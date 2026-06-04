@@ -26,6 +26,14 @@ const terrainBrushes = [
   { id: 'label', label: 'Label', color: '#111827', geo: 'text' }
 ]
 
+const objectBrushes = [
+  { id: 'castle', label: 'Castle', color: '#7d5f3c', geo: 'rectangle' },
+  { id: 'village', label: 'Village', color: '#8b6a44', geo: 'rectangle' },
+  { id: 'tavern', label: 'Tavern', color: '#a9653b', geo: 'rectangle' },
+  { id: 'mine', label: 'Mine', color: '#4d463d', geo: 'rectangle' },
+  { id: 'camp', label: 'Camp', color: '#7f612e', geo: 'ellipse' }
+]
+
 const palettes = {
   old: {
     mountain: '#6f6a53',
@@ -474,6 +482,296 @@ function createRiverShapes(point, palette) {
   ]
 }
 
+function createCastleShapes(point, palette) {
+  const base = (palette && palette.city) || '#605043'
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      props: {
+        geo: 'rectangle',
+        w: 120,
+        h: 90,
+        fill: 'solid',
+        color: shadeColor(base, -4),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 52,
+      y: point.y - 26,
+      props: {
+        geo: 'rectangle',
+        w: 30,
+        h: 58,
+        fill: 'solid',
+        color: shadeColor(base, -10),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 52,
+      y: point.y - 26,
+      props: {
+        geo: 'rectangle',
+        w: 30,
+        h: 58,
+        fill: 'solid',
+        color: shadeColor(base, -10),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 26,
+      y: point.y - 49,
+      props: {
+        geo: 'rectangle',
+        w: 18,
+        h: 12,
+        fill: 'solid',
+        color: shadeColor(base, 12),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 26,
+      y: point.y - 49,
+      props: {
+        geo: 'rectangle',
+        w: 18,
+        h: 12,
+        fill: 'solid',
+        color: shadeColor(base, 12),
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createVillageShapes(point, palette) {
+  const base = (palette && palette.hill) || '#9d7b52'
+  return [
+    {
+      type: 'geo',
+      x: point.x - 32,
+      y: point.y,
+      props: {
+        geo: 'rectangle',
+        w: 32,
+        h: 26,
+        fill: 'solid',
+        color: shadeColor(base, -8),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 8,
+      y: point.y + 8,
+      props: {
+        geo: 'rectangle',
+        w: 26,
+        h: 22,
+        fill: 'solid',
+        color: shadeColor(base, -2),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 40,
+      y: point.y - 8,
+      props: {
+        geo: 'rectangle',
+        w: 24,
+        h: 20,
+        fill: 'solid',
+        color: shadeColor(base, 6),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 25,
+      y: point.y - 18,
+      props: {
+        geo: 'ellipse',
+        w: 26,
+        h: 14,
+        fill: 'solid',
+        color: shadeColor(base, 12),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 11,
+      y: point.y - 18,
+      props: {
+        geo: 'ellipse',
+        w: 24,
+        h: 12,
+        fill: 'solid',
+        color: shadeColor(base, 18),
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createTavernShapes(point, palette) {
+  const base = (palette && palette.city) || '#5f3f24'
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y + 6,
+      props: {
+        geo: 'rectangle',
+        w: 90,
+        h: 34,
+        fill: 'solid',
+        color: shadeColor(base, -10),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 20,
+      y: point.y - 18,
+      props: {
+        geo: 'ellipse',
+        w: 38,
+        h: 22,
+        fill: 'solid',
+        color: shadeColor(base, 12),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 20,
+      y: point.y - 18,
+      props: {
+        geo: 'ellipse',
+        w: 38,
+        h: 22,
+        fill: 'solid',
+        color: shadeColor(base, 12),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y + 24,
+      props: {
+        geo: 'rectangle',
+        w: 18,
+        h: 24,
+        fill: 'solid',
+        color: shadeColor(base, -28),
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createMineShapes(point, palette) {
+  const base = (palette && palette.mountain) || '#7f6d54'
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y + 12,
+      props: {
+        geo: 'ellipse',
+        w: 100,
+        h: 60,
+        fill: 'solid',
+        color: shadeColor(base, -18),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y - 6,
+      props: {
+        geo: 'rectangle',
+        w: 40,
+        h: 32,
+        fill: 'solid',
+        color: shadeColor(base, 6),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 20,
+      y: point.y + 14,
+      props: {
+        geo: 'rectangle',
+        w: 8,
+        h: 32,
+        fill: 'solid',
+        color: shadeColor(base, -30),
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
+function createCampShapes(point, palette) {
+  const base = (palette && palette.desert) || '#d4a66f'
+  return [
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y,
+      props: {
+        geo: 'ellipse',
+        w: 120,
+        h: 60,
+        fill: 'solid',
+        color: shadeColor(base, -14),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x,
+      y: point.y - 10,
+      props: {
+        geo: 'rectangle',
+        w: 14,
+        h: 34,
+        fill: 'solid',
+        color: shadeColor(base, 18),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x - 18,
+      y: point.y + 2,
+      props: {
+        geo: 'ellipse',
+        w: 32,
+        h: 18,
+        fill: 'solid',
+        color: shadeColor(base, 26),
+        dash: 'draw'
+      }
+    }
+  ]
+}
+
 function getSavedSnapshot() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -562,6 +860,59 @@ function TerrainToolbar({ editor, palette }) {
   return (
     <div className="tool-grid">
       {terrainBrushes.map((brush) => (
+        <button key={brush.id} type="button" className="tool-button" onClick={() => addShape(brush)}>
+          {brush.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function ObjectToolbar({ editor, palette }) {
+  const addShape = (brush) => {
+    const point = editor.getViewportPageBounds().center
+    let shapes = []
+
+    switch (brush.id) {
+      case 'castle':
+        shapes = createCastleShapes(point, palette)
+        break
+      case 'village':
+        shapes = createVillageShapes(point, palette)
+        break
+      case 'tavern':
+        shapes = createTavernShapes(point, palette)
+        break
+      case 'mine':
+        shapes = createMineShapes(point, palette)
+        break
+      case 'camp':
+        shapes = createCampShapes(point, palette)
+        break
+      default:
+        shapes = [
+          {
+            type: 'geo',
+            x: point.x,
+            y: point.y,
+            props: {
+              geo: brush.geo,
+              w: 120,
+              h: 80,
+              fill: 'solid',
+              color: brush.color,
+              dash: 'draw'
+            }
+          }
+        ]
+    }
+
+    editor.createShapes(shapes)
+  }
+
+  return (
+    <div className="tool-grid">
+      {objectBrushes.map((brush) => (
         <button key={brush.id} type="button" className="tool-button" onClick={() => addShape(brush)}>
           {brush.label}
         </button>
@@ -671,6 +1022,12 @@ export default function App() {
               </select>
             </label>
             {editor && <TerrainToolbar editor={editor} palette={palettes[paletteName]} />}
+          </section>
+
+          <section className="panel">
+            <h2>Map objects</h2>
+            <p>Insert castles, villages, taverns, mines, and camp icons with one click.</p>
+            {editor && <ObjectToolbar editor={editor} palette={palettes[paletteName]} />}
           </section>
 
           <section className="panel">
