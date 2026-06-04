@@ -96,6 +96,7 @@ button.active {
   background: rgba(255, 250, 238, 0.92);
   border-right: 2px solid rgba(121, 81, 46, 0.16);
   padding: 24px 22px;
+  margin-top: 10px;
   overflow-y: auto;
 }
 
