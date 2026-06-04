@@ -488,11 +488,11 @@ function createCastleShapes(point, palette) {
     {
       type: 'geo',
       x: point.x,
-      y: point.y,
+      y: point.y + 8,
       props: {
         geo: 'rectangle',
-        w: 120,
-        h: 90,
+        w: 100,
+        h: 70,
         fill: 'solid',
         color: shadeColor(base, -4),
         dash: 'draw'
@@ -500,12 +500,12 @@ function createCastleShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x - 52,
-      y: point.y - 26,
+      x: point.x - 55,
+      y: point.y - 30,
       props: {
         geo: 'rectangle',
-        w: 30,
-        h: 58,
+        w: 26,
+        h: 50,
         fill: 'solid',
         color: shadeColor(base, -10),
         dash: 'draw'
@@ -513,12 +513,12 @@ function createCastleShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x + 52,
-      y: point.y - 26,
+      x: point.x + 55,
+      y: point.y - 30,
       props: {
         geo: 'rectangle',
-        w: 30,
-        h: 58,
+        w: 26,
+        h: 50,
         fill: 'solid',
         color: shadeColor(base, -10),
         dash: 'draw'
@@ -526,25 +526,12 @@ function createCastleShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x - 26,
-      y: point.y - 49,
+      x: point.x,
+      y: point.y - 50,
       props: {
         geo: 'rectangle',
-        w: 18,
-        h: 12,
-        fill: 'solid',
-        color: shadeColor(base, 12),
-        dash: 'draw'
-      }
-    },
-    {
-      type: 'geo',
-      x: point.x + 26,
-      y: point.y - 49,
-      props: {
-        geo: 'rectangle',
-        w: 18,
-        h: 12,
+        w: 16,
+        h: 10,
         fill: 'solid',
         color: shadeColor(base, 12),
         dash: 'draw'
@@ -558,12 +545,12 @@ function createVillageShapes(point, palette) {
   return [
     {
       type: 'geo',
-      x: point.x - 32,
-      y: point.y,
+      x: point.x - 40,
+      y: point.y + 6,
       props: {
         geo: 'rectangle',
-        w: 32,
-        h: 26,
+        w: 28,
+        h: 22,
         fill: 'solid',
         color: shadeColor(base, -8),
         dash: 'draw'
@@ -571,12 +558,12 @@ function createVillageShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x + 8,
-      y: point.y + 8,
+      x: point.x,
+      y: point.y,
       props: {
         geo: 'rectangle',
         w: 26,
-        h: 22,
+        h: 20,
         fill: 'solid',
         color: shadeColor(base, -2),
         dash: 'draw'
@@ -584,12 +571,12 @@ function createVillageShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x + 40,
-      y: point.y - 8,
+      x: point.x + 42,
+      y: point.y + 8,
       props: {
         geo: 'rectangle',
         w: 24,
-        h: 20,
+        h: 18,
         fill: 'solid',
         color: shadeColor(base, 6),
         dash: 'draw'
@@ -597,12 +584,12 @@ function createVillageShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x - 25,
-      y: point.y - 18,
+      x: point.x - 36,
+      y: point.y - 20,
       props: {
         geo: 'ellipse',
-        w: 26,
-        h: 14,
+        w: 24,
+        h: 12,
         fill: 'solid',
         color: shadeColor(base, 12),
         dash: 'draw'
@@ -610,12 +597,12 @@ function createVillageShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x + 11,
+      x: point.x + 8,
       y: point.y - 18,
       props: {
         geo: 'ellipse',
-        w: 24,
-        h: 12,
+        w: 22,
+        h: 10,
         fill: 'solid',
         color: shadeColor(base, 18),
         dash: 'draw'
@@ -630,11 +617,11 @@ function createTavernShapes(point, palette) {
     {
       type: 'geo',
       x: point.x,
-      y: point.y + 6,
+      y: point.y + 10,
       props: {
         geo: 'rectangle',
-        w: 90,
-        h: 34,
+        w: 80,
+        h: 30,
         fill: 'solid',
         color: shadeColor(base, -10),
         dash: 'draw'
@@ -642,12 +629,12 @@ function createTavernShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x - 20,
-      y: point.y - 18,
+      x: point.x - 24,
+      y: point.y - 22,
       props: {
         geo: 'ellipse',
-        w: 38,
-        h: 22,
+        w: 34,
+        h: 18,
         fill: 'solid',
         color: shadeColor(base, 12),
         dash: 'draw'
@@ -655,12 +642,12 @@ function createTavernShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x + 20,
-      y: point.y - 18,
+      x: point.x + 24,
+      y: point.y - 22,
       props: {
         geo: 'ellipse',
-        w: 38,
-        h: 22,
+        w: 34,
+        h: 18,
         fill: 'solid',
         color: shadeColor(base, 12),
         dash: 'draw'
@@ -669,11 +656,11 @@ function createTavernShapes(point, palette) {
     {
       type: 'geo',
       x: point.x,
-      y: point.y + 24,
+      y: point.y + 30,
       props: {
         geo: 'rectangle',
-        w: 18,
-        h: 24,
+        w: 14,
+        h: 18,
         fill: 'solid',
         color: shadeColor(base, -28),
         dash: 'draw'
@@ -688,11 +675,11 @@ function createMineShapes(point, palette) {
     {
       type: 'geo',
       x: point.x,
-      y: point.y + 12,
+      y: point.y + 16,
       props: {
         geo: 'ellipse',
-        w: 100,
-        h: 60,
+        w: 90,
+        h: 50,
         fill: 'solid',
         color: shadeColor(base, -18),
         dash: 'draw'
@@ -700,12 +687,12 @@ function createMineShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x,
-      y: point.y - 6,
+      x: point.x - 18,
+      y: point.y - 12,
       props: {
         geo: 'rectangle',
-        w: 40,
-        h: 32,
+        w: 36,
+        h: 28,
         fill: 'solid',
         color: shadeColor(base, 6),
         dash: 'draw'
@@ -713,12 +700,12 @@ function createMineShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x + 20,
-      y: point.y + 14,
+      x: point.x + 22,
+      y: point.y + 12,
       props: {
         geo: 'rectangle',
         w: 8,
-        h: 32,
+        h: 28,
         fill: 'solid',
         color: shadeColor(base, -30),
         dash: 'draw'
@@ -733,11 +720,11 @@ function createCampShapes(point, palette) {
     {
       type: 'geo',
       x: point.x,
-      y: point.y,
+      y: point.y + 12,
       props: {
         geo: 'ellipse',
-        w: 120,
-        h: 60,
+        w: 110,
+        h: 50,
         fill: 'solid',
         color: shadeColor(base, -14),
         dash: 'draw'
@@ -745,12 +732,12 @@ function createCampShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x,
-      y: point.y - 10,
+      x: point.x - 4,
+      y: point.y - 14,
       props: {
         geo: 'rectangle',
-        w: 14,
-        h: 34,
+        w: 12,
+        h: 30,
         fill: 'solid',
         color: shadeColor(base, 18),
         dash: 'draw'
@@ -758,14 +745,27 @@ function createCampShapes(point, palette) {
     },
     {
       type: 'geo',
-      x: point.x - 18,
-      y: point.y + 2,
+      x: point.x - 28,
+      y: point.y + 6,
       props: {
         geo: 'ellipse',
-        w: 32,
-        h: 18,
+        w: 28,
+        h: 16,
         fill: 'solid',
         color: shadeColor(base, 26),
+        dash: 'draw'
+      }
+    },
+    {
+      type: 'geo',
+      x: point.x + 28,
+      y: point.y + 8,
+      props: {
+        geo: 'ellipse',
+        w: 26,
+        h: 14,
+        fill: 'solid',
+        color: shadeColor(base, 20),
         dash: 'draw'
       }
     }
