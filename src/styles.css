@@ -173,7 +173,7 @@ button.active {
   background: transparent;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 600px) {
   .layout {
     grid-template-columns: 1fr;
     min-height: auto;
