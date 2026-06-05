@@ -999,6 +999,19 @@ export default function App() {
     editor.zoomToFit()
   }
 
+  const createStamp = (assetUrl) => {
+    if (!editor) return window.alert('Editor not ready')
+    const center = editor.getViewportPageBounds().center
+    try {
+      // Try an embed/image shape; tldraw will attempt to render external embeds
+      const id = `stamp-${Date.now()}`
+      editor.createShape({ id, type: 'embed', x: center.x, y: center.y, props: { w: 160, h: 160, url: assetUrl } })
+    } catch (err) {
+      console.error('createStamp failed', err)
+      window.alert('Failed to create stamp')
+    }
+  }
+
   return (
     <div className="app">
       <header className="topbar">
@@ -1055,6 +1068,18 @@ export default function App() {
               <li>Zoom with wheel gestures and pan anywhere on the infinite canvas.</li>
               <li>Save locally and export JSON to preserve your work.</li>
             </ul>
+          </section>
+
+          <section className="panel">
+            <h2>Stamp library</h2>
+            <p>Click a stamp to insert it on the canvas.</p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <img src="/assets/mountain.svg" alt="mountain" style={{ width: 64, height: 64, cursor: 'pointer' }} onClick={() => createStamp('/assets/mountain.svg')} />
+              <img src="/assets/forest.svg" alt="forest" style={{ width: 64, height: 64, cursor: 'pointer' }} onClick={() => createStamp('/assets/forest.svg')} />
+              <img src="/assets/river.svg" alt="river" style={{ width: 64, height: 64, cursor: 'pointer' }} onClick={() => createStamp('/assets/river.svg')} />
+              <img src="/assets/castle.svg" alt="castle" style={{ width: 64, height: 64, cursor: 'pointer' }} onClick={() => createStamp('/assets/castle.svg')} />
+              <img src="/assets/village.svg" alt="village" style={{ width: 64, height: 64, cursor: 'pointer' }} onClick={() => createStamp('/assets/village.svg')} />
+            </div>
           </section>
         </aside>
 
